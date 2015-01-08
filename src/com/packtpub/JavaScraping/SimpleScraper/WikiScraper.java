@@ -7,7 +7,8 @@ import java.io.*;
 
 
 public class WikiScraper {
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		scrapeTopic("/wiki/Java");
 	}
 	
