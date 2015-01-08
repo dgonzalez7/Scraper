@@ -14,6 +14,7 @@ public class WikiScraper {
 	
 	public static void main(String[] args) 
 	{
+		
 		generator = new Random(31415926);
 		scrapeTopic("/wiki/Java");
 	}
