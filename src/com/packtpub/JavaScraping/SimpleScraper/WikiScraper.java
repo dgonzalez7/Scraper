@@ -12,7 +12,8 @@ public class WikiScraper {
 		scrapeTopic("/wiki/Java");
 	}
 	
-	public static void scrapeTopic(String url){
+	public static void scrapeTopic(String url)
+	{
 		String html = getUrl("http://www.wikipedia.org/"+url);
 		// System.out.println(html);
 		Document doc = Jsoup.parse(html);
