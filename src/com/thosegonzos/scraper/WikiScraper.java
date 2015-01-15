@@ -25,8 +25,10 @@ public class WikiScraper {
 		String bgg = "http://boardgamegeek.com/browse/boardgame/page/";
 		// String page = "/page/1";
 		
+		int startPage = 26;
 		
-		System.out.println("***********" + bgg + 1);
+		
+		System.out.println("***********" + bgg + startPage);
 		String html = getUrl(bgg + 1);
 		Document doc = Jsoup.parse(html);
 		/*
@@ -64,7 +66,7 @@ public class WikiScraper {
 			FileWriter fw = new FileWriter(bggParsed);
 			BufferedWriter bw = new BufferedWriter(fw);
 			
-			for (int p = 1; p <= lastPageInt; p++)
+			for (int p = startPage; p <= lastPageInt; p++)
 			{
 				System.out.println("***********" + bgg + p);
 				html = getUrl(bgg + p);
@@ -103,8 +105,21 @@ public class WikiScraper {
 					// Get price
 					// ****
 					
+					// Get data from item detail page
+					ItemPage ip = new ItemPage(gameLink);
+					System.out.println(ip.itemYearPublished);
+					System.out.println(ip.itemNumPlayers);
+					System.out.println(ip.itemPlayerAges);
+					System.out.println(ip.itemPlayingTime);
+					
+					// System.out.println("Stop here!");
+					
 					// Save Data
-					String row = gameRank + ", " + gameName + ", " + gameLink + ", " + gameGeekRating + ", " + gameAvgRating + ", " + gameNumVoters;
+					String row = gameRank + ", " + gameName + ", " 
+							+ gameLink + ", " + gameGeekRating + ", "
+							+ gameAvgRating + ", " + gameNumVoters + ", "
+							+ ip.itemYearPublished + ", " + ip.itemNumPlayers + ", "
+							+ ip.itemPlayerAges + ", " + ip.itemPlayingTime;
 					bw.write(row);
 					bw.newLine();
                     // bw.newLine();
@@ -114,6 +129,7 @@ public class WikiScraper {
 		}
 		catch (IOException e)
 		{
+			System.out.println("ERROR!!!");
 			e.printStackTrace();
 		}
         
