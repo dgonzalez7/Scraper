@@ -15,18 +15,21 @@ public class WikiScraper {
 	public static void main(String[] args) 
 	{
 		// generator = new Random(31415926);
-		scrapeBGG();
+		int startPage = 1;
+		if (args.length != 0)
+		{
+			startPage = Integer.parseInt(args[0]);
+		}
+		
+		scrapeBGG(startPage);
 	}
 	
-	public static void scrapeBGG()
+	public static void scrapeBGG(int startPage)
 	{
 		File htmlOut = new File("data/html.txt");
 		File bggParsed = new File("data/BGG.txt");
 		String bgg = "http://boardgamegeek.com/browse/boardgame/page/";
 		// String page = "/page/1";
-		
-		int startPage = 26;
-		
 		
 		System.out.println("***********" + bgg + startPage);
 		String html = getUrl(bgg + 1);
@@ -86,20 +89,20 @@ public class WikiScraper {
 					String gameName = findGridStart.text();
 					String gameLink = findGridStart.attr("href");
 					System.out.println(gameName);
-					System.out.println(gameLink);
+					// System.out.println(gameLink);
 
 					// Get rankings
 					Element geekRating = doc.select("td.collection_bggrating").get((i - 1) * 3);
 					String gameGeekRating = geekRating.text();
-					System.out.println(gameGeekRating);
+					// System.out.println(gameGeekRating);
 					// System.out.println(geekRating);
 					Element avgRating = doc.select("td.collection_bggrating").get((3 * i) - 2);
 					String gameAvgRating = avgRating.text();
-					System.out.println(gameAvgRating);
+					// System.out.println(gameAvgRating);
 					// System.out.println(avgRating);
 					Element numVoters = doc.select("td.collection_bggrating").get((i * 3) - 1);
 					String gameNumVoters = numVoters.text();
-					System.out.println(gameNumVoters);
+					// System.out.println(gameNumVoters);
 					// System.out.println(numVoters);
 
 					// Get price
@@ -107,10 +110,10 @@ public class WikiScraper {
 					
 					// Get data from item detail page
 					ItemPage ip = new ItemPage(gameLink);
-					System.out.println(ip.itemYearPublished);
-					System.out.println(ip.itemNumPlayers);
-					System.out.println(ip.itemPlayerAges);
-					System.out.println(ip.itemPlayingTime);
+					// System.out.println(ip.itemYearPublished);
+					// System.out.println(ip.itemNumPlayers);
+					// System.out.println(ip.itemPlayerAges);
+					// System.out.println(ip.itemPlayingTime);
 					
 					// System.out.println("Stop here!");
 					
@@ -119,10 +122,21 @@ public class WikiScraper {
 							+ gameLink + ", " + gameGeekRating + ", "
 							+ gameAvgRating + ", " + gameNumVoters + ", "
 							+ ip.itemYearPublished + ", " + ip.itemNumPlayers + ", "
+							+ ip.itemBestNumPlayers + ", "
 							+ ip.itemPlayerAges + ", " + ip.itemPlayingTime;
 					bw.write(row);
 					bw.newLine();
                     // bw.newLine();
+					
+					// Pause for good luck
+					try
+					{
+						Thread.sleep(500);
+					}
+					catch (InterruptedException e)
+					{
+						Thread.currentThread().interrupt();
+					}
 				}
 			}
             bw.close();
@@ -132,6 +146,7 @@ public class WikiScraper {
 			System.out.println("ERROR!!!");
 			e.printStackTrace();
 		}
+		
         
 		// System.out.println(findTEST.firstElementSibling());
 		/*

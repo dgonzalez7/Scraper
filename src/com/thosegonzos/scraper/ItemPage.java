@@ -14,6 +14,7 @@ public class ItemPage {
 	public String itemNumPlayers;
 	public String itemPlayerAges;
 	public String itemPlayingTime;
+	public String itemBestNumPlayers;
 
 	public ItemPage(String detailURL) 
 	{
@@ -26,6 +27,8 @@ public class ItemPage {
 		System.out.println("URL Scraping: " + bgg + detailURL);
 		String html = getUrl(bgg + detailURL);
 		Document doc = Jsoup.parse(html);
+			
+		
 		/*
 		// print all HTML
 		System.out.println(doc);
@@ -55,7 +58,14 @@ public class ItemPage {
 		Element numPlayers = doc.select("div#edit_players").first();
 		itemNumPlayers = numPlayers.text();
         // System.out.println(itemNumPlayers);
-        
+		
+		Element bestNumPlayers = doc.select("table.geekitem_infotable").select("tr").first().nextElementSibling().nextElementSibling().nextElementSibling().nextElementSibling().nextElementSibling().select("div").first();
+		itemBestNumPlayers = bestNumPlayers.text();
+		// Element bestNumPlayers = table.get(5);
+		// System.out.println("*****");
+		// System.out.println(itemBestNumPlayers);
+		// System.out.println("*****");
+		
 		Element playerAges = doc.select("div#edit_minage").first();
 		itemPlayerAges = playerAges.text();
         // System.out.println(itemPlayerAges);
@@ -78,6 +88,8 @@ public class ItemPage {
 		String outputText = "";
 		try{
 			urlCon = urlObj.openConnection();
+			urlCon.setConnectTimeout(15000);
+			urlCon.setReadTimeout(15000);
 			in = new BufferedReader(new InputStreamReader(urlCon.getInputStream()));
 			String line = "";
 
@@ -87,6 +99,7 @@ public class ItemPage {
 			}
 			in.close();
 		}catch(IOException e){
+			System.out.println("Error in ItemPage");
 			System.out.println("There was an error connecting to the URL");
 			return "";
 		}
