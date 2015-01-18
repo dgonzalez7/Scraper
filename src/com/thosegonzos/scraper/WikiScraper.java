@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
+
 import java.net.*;
 import java.io.*;
 // import java.util.Random;
@@ -27,7 +28,7 @@ public class WikiScraper {
 	public static void scrapeBGG(int startPage)
 	{
 		File htmlOut = new File("data/html.txt");
-		File bggParsed = new File("data/BGGa.txt");
+		File bggParsed = new File("data/BGGb.txt");
 		String bgg = "http://boardgamegeek.com/browse/boardgame/page/";
 		// String page = "/page/1";
 		
@@ -122,14 +123,15 @@ public class WikiScraper {
 					
 					// Good break point
 					// System.out.println("Stop here!");
-					
+
 					// Save Data
 					String row = gameRank + ", " + gameName + ", " 
 							+ gameLink + ", " + gameGeekRating + ", "
 							+ gameAvgRating + ", " + gameNumVoters + ", "
 							+ ip.itemYearPublished + ", " + ip.itemNumPlayers + ", "
 							+ ip.itemBestNumPlayers + ", "
-							+ ip.itemPlayerAges + ", " + ip.itemPlayingTime;
+							+ ip.itemPlayerAges + ", " + ip.itemPlayingTime + ", "
+							+ ip.itemCategoryList + "," + ip.itemSubdomainList + ", " + ip.itemMechanicList;
 					bw.write(row);
 					bw.newLine();
 					

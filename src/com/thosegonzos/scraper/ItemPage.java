@@ -15,6 +15,9 @@ public class ItemPage {
 	public String itemPlayerAges;
 	public String itemPlayingTime;
 	public String itemBestNumPlayers;
+	public String itemCategoryList;
+	public String itemSubdomainList;
+	public String itemMechanicList;
 
 	public ItemPage(String detailURL) 
 	{
@@ -27,6 +30,25 @@ public class ItemPage {
 		System.out.println("URL Scraping: " + bgg + detailURL);
 		String html = getUrl(bgg + detailURL);
 		Document doc = Jsoup.parse(html);
+		int retryCount = 0;
+		while (html.length() <= 1 && retryCount < 5)
+		{
+			System.out.println("RETRY!!!  Lenth = " + html.length() + "Retry = " + retryCount);
+			
+			// Pause & retry once
+			try
+			{
+				Thread.sleep(10000);
+			}
+			catch (InterruptedException e)
+			{
+				Thread.currentThread().interrupt();
+			}
+			html = getUrl(bgg + detailURL);
+			doc = Jsoup.parse(html);
+			
+			retryCount++;
+		}
 			
 		// print all HTML
 		// System.out.println(doc);
@@ -74,6 +96,51 @@ public class ItemPage {
 		Element playingTime = doc.select("div#edit_playingtime").first();
 		itemPlayingTime = playingTime.text();
         // System.out.println(itemPlayingTime);
+		
+		// Get all Categories
+		Elements categories = doc.select("a[href^=/boardgamecategory]");
+		
+		itemCategoryList = "";
+		if (categories.size() != 0)
+		{
+			for (int i = 0;i < categories.size();i++)
+			{
+				Element category = categories.get(i);
+				itemCategoryList += "<(" + category.text() + ")>";
+			}
+		}
+		// System.out.println(itemCategoryList);
+		
+		// Get all Subdomains
+		Elements subdomains = doc.select("a[href^=/boardgamesubdomain]");
+		// System.out.println(subdomains);
+		
+		itemSubdomainList = "";
+		if (subdomains.size() != 0)
+		{
+			for (int i = 0;i < subdomains.size();i++)
+			{
+				Element subdomain = subdomains.get(i);
+				itemSubdomainList += "<(" + subdomain.text()  + ")>";
+			}
+		}
+		// System.out.println(itemSubdomainList);
+		
+		// Get all mechanics
+		Elements mechanics = doc.select("a[href^=/boardgamemechanic]");
+		// System.out.println(mechanics);
+		
+		itemMechanicList = "";
+		if (mechanics.size() != 0)
+		{
+			for (int i = 0;i < mechanics.size();i++)
+			{
+				Element mechanic = mechanics.get(i);
+				itemMechanicList += "<(" + mechanic.text()  + ")>";
+			}
+		}
+		// System.out.println(itemMechanicList);
+		
 	}
 	
 	public static String getUrl(String url){
