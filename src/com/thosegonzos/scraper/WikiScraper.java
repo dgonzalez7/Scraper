@@ -27,17 +27,19 @@ public class WikiScraper {
 	public static void scrapeBGG(int startPage)
 	{
 		File htmlOut = new File("data/html.txt");
-		File bggParsed = new File("data/BGG.txt");
+		File bggParsed = new File("data/BGGa.txt");
 		String bgg = "http://boardgamegeek.com/browse/boardgame/page/";
 		// String page = "/page/1";
 		
 		System.out.println("***********" + bgg + startPage);
 		String html = getUrl(bgg + 1);
 		Document doc = Jsoup.parse(html);
+		
 		/*
 		// print all HTML
 		System.out.println(doc);
 		
+		// Save Menu Page HTML
 		try
 		{
 			if (!htmlOut.exists()) {
@@ -74,6 +76,9 @@ public class WikiScraper {
 				System.out.println("***********" + bgg + p);
 				html = getUrl(bgg + p);
 				doc = Jsoup.parse(html);
+				
+				// print all HTML
+				// System.out.println(doc);
 
 				for (int i = 1; doc.select("div#results_objectname" + i + " > a").first() != null;i++)
 				{
@@ -86,7 +91,7 @@ public class WikiScraper {
 					// Get name and link
 					Element findGridStart = doc.select("div#results_objectname" + i + " > a").first();
 					// System.out.println(findGridStart);
-					String gameName = findGridStart.text();
+					String gameName = findGridStart.text().replace(", "," ");
 					String gameLink = findGridStart.attr("href");
 					System.out.println(gameName);
 					// System.out.println(gameLink);
@@ -115,6 +120,7 @@ public class WikiScraper {
 					// System.out.println(ip.itemPlayerAges);
 					// System.out.println(ip.itemPlayingTime);
 					
+					// Good break point
 					// System.out.println("Stop here!");
 					
 					// Save Data
@@ -126,7 +132,6 @@ public class WikiScraper {
 							+ ip.itemPlayerAges + ", " + ip.itemPlayingTime;
 					bw.write(row);
 					bw.newLine();
-                    // bw.newLine();
 					
 					// Pause for good luck
 					try

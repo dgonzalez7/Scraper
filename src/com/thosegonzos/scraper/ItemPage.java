@@ -28,11 +28,12 @@ public class ItemPage {
 		String html = getUrl(bgg + detailURL);
 		Document doc = Jsoup.parse(html);
 			
-		
-		/*
 		// print all HTML
-		System.out.println(doc);
+		// System.out.println(doc);
 		
+		
+		// Save Item Page HTML
+		/*
 		try
 		{
 			if (!htmlOut.exists()) {
@@ -60,7 +61,7 @@ public class ItemPage {
         // System.out.println(itemNumPlayers);
 		
 		Element bestNumPlayers = doc.select("table.geekitem_infotable").select("tr").first().nextElementSibling().nextElementSibling().nextElementSibling().nextElementSibling().nextElementSibling().select("div").first();
-		itemBestNumPlayers = bestNumPlayers.text();
+		itemBestNumPlayers = bestNumPlayers.text().replace(", "," ");
 		// Element bestNumPlayers = table.get(5);
 		// System.out.println("*****");
 		// System.out.println(itemBestNumPlayers);
